@@ -1,9 +1,21 @@
-import discord,json,os
-import asyncio
+import discord, json, os
 from discord.ext import commands
-import random
-import re
+from threading import Thread
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot online!")
+    def log_message(self, *args):
+        pass
+
+def keep_alive():
+    port = int(os.environ.get("PORT", 10000))
+    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+Thread(target=keep_alive, daemon=True).start()
 
 
 
