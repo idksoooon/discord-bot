@@ -3,6 +3,9 @@ from discord.ext import commands
 from threading import Thread
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
+from flask import Flask
+from threading import Thread
+import requests
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -956,6 +959,25 @@ async def pesquisa(ctx, *, assunto=None):
 
     except Exception as e:
         await ctx.send("Deu erro na pesquisa, tenta de novo.")
+
+#=======================
+#MONITOR 24h
+#=======================
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "Bot online!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+
+keep_alive()
 
 # =========================
 # TOKEN
