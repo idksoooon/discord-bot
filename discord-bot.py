@@ -2,6 +2,7 @@ import discord, json, os
 from discord.ext import commands
 from threading import Thread
 from http.server import HTTPServer, BaseHTTPRequestHandler
+import requests
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -414,9 +415,9 @@ async def help(ctx):
 @bot.command()
 async def v(ctx):
     embed = discord.Embed(
-        title =" Verção 0.1.5.1",
+        title =" Verção 0.1.5.2",
         description=(
-            "`Novidades` → Adicionado ?help,?v e ?warn \n"
+            "`Novidades` → Adicionado ?pesquisa ; Bot cadastrado na nuvem,mas ele dorme um pouquinho...
             
         ),
         color=discord.Color.red()
@@ -452,6 +453,7 @@ async def comandos(ctx):
             "`?warn @usuário motivo` → Dá um aviso a alguém\n"
             "`?unwarn @usuário num` → Tira um aviso de alguém\n"
             "`?verwarns @usuário` → Vê os warns(avisos) de alguém\n"
+            "`?pesquisa assunto` → O bot faz uma pesquisa/resumo do assunto"
             
         ),
         color=discord.Color.green()
@@ -926,6 +928,34 @@ async def cargotemp(
         await ctx.send(
             "❌ Não tenho permissão para modificar os cargos."
         )
+
+#=============================
+#     PESQUISA
+#=============================
+
+@bot.command(name="pesquisa")
+async def pesquisa(ctx, *, assunto=None):
+    if not assunto:
+        await ctx.send("Uso certo: `?pesquisa cachorro`")
+        return
+
+    try:
+        url = f"https://pt.wikipedia.org/api/rest_v1/page/summary/{assunto}"
+        r = requests.get(url, headers={"User-Agent": "DiscordBot"}, timeout=10)
+        data = r.json()
+
+        if "extract" not in data:
+            await ctx.send(f"Não achei nada sobre **{assunto}**")
+            return
+
+        titulo = data.get("title", assunto)
+        resumo = data.get("extract", "")[:900]
+        link = data.get("content_urls", {}).get("desktop", {}).get("page", "")
+
+        await ctx.send(f"**{titulo}**\n\n{resumo}...\n\n🔗 {link}")
+
+    except Exception as e:
+        await ctx.send("Deu erro na pesquisa, tenta de novo.")
 
 # =========================
 # TOKEN
