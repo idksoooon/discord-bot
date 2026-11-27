@@ -115,11 +115,6 @@ async def on_ready():
         bot.get_all_channels(),
         name="bate-papo"  
     )
-
-    if canal:
-        await canal.send(
-            "O bot burro acordou!"
-        )
         
 # =======================
 # WARN
@@ -222,8 +217,8 @@ async def regras(ctx):
             "1️⃣ Desrespeite os outros membros.\n"
             "2️⃣ Não faça spam.\n"
             "3️⃣ Não divulgue coisas sem permissão.\n"
-            "4️⃣ Não envie conteúdo +18.\n"
-            "5️⃣ Respeite a equipe de administração."
+            "4️⃣ Envie conteúdo +18.\n"
+            "5️⃣ Desrespeite a equipe de administração."
         ),
         color=discord.Color.white()
     )
@@ -418,9 +413,9 @@ async def help(ctx):
 @bot.command()
 async def v(ctx):
     embed = discord.Embed(
-        title =" Verção 0.1.5.2",
+        title =" Verção 0.1.5.5",
         description=(
-            "`Novidades` → Adicionado ?pesquisa ; Bot cadastrado na nuvem,mas ele dorme um pouquinho... "
+            "`Novidades` → Adicionado ?pesquisa ; Bot cadastrado na nuvem,sem dormir ; Calculadora Cientifica integrada"
             
         ),
         color=discord.Color.red()
