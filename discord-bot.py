@@ -5,7 +5,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
 from flask import Flask
 from threading import Thread
-import requests
+import math
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -979,6 +979,44 @@ def keep_alive():
 
 keep_alive()
 
+#==========================
+#CALCULADORA CIENTIFICA
+#==========================
+@bot.command()
+async def calc(ctx, *, conta: str = None):
+    if conta is None:
+        await ctx.send("Manda a conta! Exemplo: `?calc 2+2*3` ou `?calc sqrt(144)`")
+        return
+
+    try:
+        # Deixa a conta mais fácil de digitar
+        conta_limpa = conta.lower().replace('^', '**').replace('x', '*').replace(',', '.').replace('÷', '/').replace('²','**2').replace('³','**3')
+
+        # Funções liberadas
+        funcoes = {
+            'sin': lambda x: math.sin(math.radians(x)),
+            'cos': lambda x: math.cos(math.radians(x)),
+            'tan': lambda x: math.tan(math.radians(x)),
+            'sqrt': math.sqrt,
+            'log': math.log10,
+            'ln': math.log,
+            'abs': abs,
+            'pi': math.pi,
+            'e': math.e,
+        }
+
+        resultado = eval(conta_limpa, {"__builtins__": {}}, funcoes)
+
+        await ctx.send(f"`{conta}` = **{resultado}**")
+
+    except Exception as e:
+        await ctx.send(f"Deu erro nessa conta.Tenta de novo. Ex: `?calc (2+3)*4`")
+
+@bot.command()
+async def c(ctx, *, conta: str = None):
+    # Atalho pra ?calc, só pra ser mais rápido
+    await ctx.invoke(bot.get_command('calc'), conta=conta)
+    
 # =========================
 # TOKEN
 # =========================
