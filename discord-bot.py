@@ -417,7 +417,7 @@ async def v(ctx):
     embed = discord.Embed(
         title =" Verção 0.1.5.2",
         description=(
-            "`Novidades` → Adicionado ?pesquisa ; Bot cadastrado na nuvem,mas ele dorme um pouquinho...
+            "`Novidades` → Adicionado ?pesquisa ; Bot cadastrado na nuvem,mas ele dorme um pouquinho... "
             
         ),
         color=discord.Color.red()
